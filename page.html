@@ -1,0 +1,160 @@
+<!doctype html>
+<meta charset="utf-8" />
+<style>
+  body { margin: 0; font-family: system-ui, sans-serif; }
+  .canvas { position: relative; width: 100vw; height: 100vh; background: #f7f7f7; overflow: hidden; }
+
+  /* Узел = квадрат */
+  .node {
+    position: absolute; width: 120px; height: 60px;
+    background: #fff; border: 2px solid #111; border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0,0,0,.08);
+    display: grid; place-items: center; user-select: none; cursor: grab;
+  }
+  .node:active { cursor: grabbing; }
+
+  /* Рёбра (стрелки) — из двух частей: линия и наконечник */
+  .edge { position: absolute; left: 0; top: 0; pointer-events: none; }
+  .edge .shaft {
+    position: absolute; height: 2px; background: #111; transform-origin: 0 50%;
+  }
+  .edge .head {
+    position: absolute; width: 0; height: 0;
+    border-top: 7px solid transparent; border-bottom: 7px solid transparent;
+    border-left: 12px solid #111; /* треугольник */
+    transform: translate(-6px, -7px) rotate(0deg);
+  }
+</style>
+
+<div class="canvas" id="canvas"></div>
+
+<script>
+  // ----- ДАННЫЕ (можно грузить как JSON) -----
+  const data = {
+    nodes: [
+      { id: 7,  name: "P1", x: 120, y: 100 },
+      { id: 9,  name: "P2", x: 120, y: 260 },
+      { id: 42, name: "X",  x: 420, y: 180 }
+    ],
+    edges: [
+      { source: 7, target: 42 },
+      { source: 9, target: 42 }
+    ]
+  };
+
+  const NODE_W = 120, NODE_H = 60;
+
+  // ----- РЕНДЕР -----
+  const root = document.getElementById('canvas');
+  const byId = new Map();
+
+  function nodeCenter(n) {
+    return { cx: n.x + NODE_W/2, cy: n.y + NODE_H/2 };
+  }
+
+  function makeNode(n) {
+    const el = document.createElement('div');
+    el.className = 'node';
+    el.textContent = n.name;
+    el.style.left = n.x + 'px';
+    el.style.top  = n.y + 'px';
+    el.dataset.id = n.id;
+    enableDrag(el, n);
+    root.appendChild(el);
+    byId.set(n.id, { model: n, el });
+  }
+
+  function makeEdge(e) {
+    const wrap = document.createElement('div');
+    wrap.className = 'edge';
+    wrap.dataset.source = e.source;
+    wrap.dataset.target = e.target;
+
+    const shaft = document.createElement('div');
+    shaft.className = 'shaft';
+
+    const head = document.createElement('div');
+    head.className = 'head';
+
+    wrap.appendChild(shaft);
+    wrap.appendChild(head);
+    root.appendChild(wrap);
+    e.el = wrap;
+  }
+
+  function layoutEdge(e) {
+    const s = byId.get(e.source).model;
+    const t = byId.get(e.target).model;
+    const { cx: x1, cy: y1 } = nodeCenter(s);
+    const { cx: x2, cy: y2 } = nodeCenter(t);
+
+    // Вектор, длина, угол
+    const dx = x2 - x1, dy = y2 - y1;
+    const len = Math.hypot(dx, dy);
+    const ang = Math.atan2(dy, dx) * 180 / Math.PI;
+
+    // Немного «отступаем» от центров, чтобы линия входила в границы квадрата
+    const pad = 20;
+    const ratio = (len - pad) / len;
+    const x1p = x1 + (dx * (1 - ratio));
+    const y1p = y1 + (dy * (1 - ratio));
+    const x2p = x1 + dx * ratio;
+    const y2p = y1 + dy * ratio;
+
+    // Позиционируем обёртку на (x1p,y1p); тянем shaft к (x2p,y2p)
+    const shaft = e.el.querySelector('.shaft');
+    e.el.style.left = x1p + 'px';
+    e.el.style.top  = y1p + 'px';
+    shaft.style.width = Math.max(0, Math.hypot(x2p - x1p, y2p - y1p)) + 'px';
+    shaft.style.transform = `rotate(${ang}deg)`;
+
+    // Наконечник — в конце линии, повернут по углу
+    const head = e.el.querySelector('.head');
+    head.style.left = (x2p - x1p) + 'px';
+    head.style.top  = (y2p - y1p) + 'px';
+    head.style.transform = `translate(-6px,-7px) rotate(${ang}deg)`;
+  }
+
+  function layoutAllEdges() {
+    data.edges.forEach(layoutEdge);
+  }
+
+  // ----- DRAG & DROP -----
+  function enableDrag(el, model) {
+    let dragging = false, startX, startY, origX, origY;
+
+    el.addEventListener('mousedown', (ev) => {
+      dragging = true;
+      startX = ev.clientX; startY = ev.clientY;
+      origX = model.x; origY = model.y;
+      el.style.cursor = 'grabbing';
+      ev.preventDefault();
+    });
+
+    window.addEventListener('mousemove', (ev) => {
+      if (!dragging) return;
+      const dx = ev.clientX - startX;
+      const dy = ev.clientY - startY;
+      model.x = origX + dx;
+      model.y = origY + dy;
+      el.style.left = model.x + 'px';
+      el.style.top  = model.y + 'px';
+      layoutAllEdges();
+    });
+
+    window.addEventListener('mouseup', () => {
+      if (!dragging) return;
+      dragging = false;
+      el.style.cursor = 'grab';
+    });
+  }
+
+  // ----- ИНИЦ -----
+  data.nodes.forEach(makeNode);
+  data.edges.forEach(makeEdge);
+  layoutAllEdges();
+
+  // ----- ПРИМЕР API редактирования -----
+  // window.addNode = (id, name, x, y) => { ... }
+  // window.addEdge = (source, target) => { ... }
+</script>

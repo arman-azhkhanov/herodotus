@@ -1,0 +1,207 @@
+файл 1
+:PROPERTIES:
+:ID: 7DE3E685-4DAC-40A9-97D7-43A810DCE265
+:WHAT: armory
+:WHEN: medieval
+:WHERE: Europe
+:ROAM_ALIASES: "английский лук"
+:SOURCE: Glazychev-History-Of-Engineering
+:END:
+#+title: Longbow
+#+BEGIN_RELATIONS
+* Leads to
+
+* Requires
+[[id:6D086AB8-926C-476B-9B29-656B0793F7CA][лук]]
+* Subset of
+#+END_RELATIONS
+
+файл 2
+:PROPERTIES:
+:ID: C9EA9658-CF4F-4E5D-81F4-9CED79D4FF81
+:WHAT: concept math
+:WHEN: tbd
+:WHERE: tbd
+:ROAM_ALIASES: "абстракция"
+:SOURCE: Glazychev-History-Of-Engineering
+:END:
+#+title: абстрактное мышление
+#+BEGIN_RELATIONS
+* Leads to
+
+* Requires
+[[id:4653B479-2DB1-4536-AD71-3BE553639369][чистые геометрические формы]]
+* Subset of
+#+END_RELATIONS
+
+файл 3
+:PROPERTIES:
+:ID: CD5A2C20-9794-434E-A75A-0717430135B4
+:WHAT: urban technology
+:WHEN: tbd
+:WHERE: tbd
+:ROAM_ALIASES: "городская агломерация" "город и пригород"
+:SOURCE: Glazychev-History-Of-Engineering
+:END:
+#+title: агломерация
+#+BEGIN_RELATIONS
+* Leads to
+
+* Requires
+[[id:F70E97A6-101A-4488-BBDB-4E950D1EA746][внутренний город]]
+[[id:7BB6F26A-CECA-4CB7-A305-C147A89D0615][стена внутреннего города]]
+[[id:E813438E-2645-4C02-ABBE-663B1887D732][внешняя стена]]
+[[id:A3523DD9-10F7-4FA1-A708-3EC17B3B11C7][окресные посадки культур]]
+* Subset of
+
+* Siblings
+#+END_RELATIONS
+
+файл 4
+:PROPERTIES:
+:ID: 6F1193C2-D425-4FD2-8F13-B051F5D15624
+:WHAT: institution business technology
+:WHEN: tbd
+:WHERE: tbd
+:ROAM_ALIASES: 
+:SOURCE: Glazychev-History-Of-Engineering
+:END:
+#+title: аграрный комплекс
+#+BEGIN_RELATIONS
+* Leads to
+
+* Requires
+
+* Subset of
+
+* Siblings
+#+END_RELATIONS
+
+
+файл 5
+:PROPERTIES:
+:ID: 364132E9-DE96-4028-8143-BB37760FCBF7
+:WHAT: materials technology logistics
+:WHEN: bronze
+:WHERE: Mesopotamia
+:ROAM_ALIASES: 
+:SOURCE: Glazychev-History-Of-Engineering
+:END:
+#+title: асфальт
+#+BEGIN_RELATIONS
+* Leads to
+
+* Requires
+
+* Subset of
+
+* Siblings
+#+END_RELATIONS
+
+файл 6
+:PROPERTIES:
+:ID: 0DE9E212-4272-45F8-B4FC-8FF5A1C55ABC
+:WHAT: materials
+:WHEN: bronze
+:WHERE: Mesopotamia
+:ROAM_ALIASES: 
+:SOURCE: Glazychev-History-Of-Engineering
+:END:
+#+title: битум
+#+BEGIN_RELATIONS
+* Leads to
+[[id:364132E9-DE96-4028-8143-BB37760FCBF7][асфальт]]
+* Requires
+
+* Subset of
+
+* Siblings
+#+END_RELATIONS
+
+файл 7
+:PROPERTIES:
+:ID: D12E33F4-95E9-4275-86E6-37ED7F255F10
+:WHAT: materials
+:WHEN: tbd
+:WHERE: Europe
+:ROAM_ALIASES: "железная руда" "гранулы железа"
+:SOURCE: Glazychev-History-Of-Engineering
+:END:
+#+title: болотная железная руда
+
+#+BEGIN_RELATIONS
+* Leads to
+
+* Requires
+
+* Subset of
+
+* Siblings
+
+#+END_RELATIONS
+
+
+файл 8
+:PROPERTIES:
+:ID: F7292786-039C-42E4-A019-035BE30932EF
+:WHAT: materials
+:WHEN: bronze
+:WHERE: tbd
+:ROAM_ALIASES: 
+:SOURCE: Glazychev-History-Of-Engineering
+:END:
+#+title: бронза
+#+BEGIN_RELATIONS
+* Leads to
+
+* Requires
+[[id:3CF78809-CDE3-4D72-9C00-2B219CDC714F][медь]]
+[[id:1E2D5010-FBF2-4B34-A63D-27C11A846B34][олово]]
+* Subset of
+[[id:EC51E167-F553-4D0F-8BE0-0B9BC7C40561][композитный материал]]
+* Siblings
+#+END_RELATIONS
+
+
+файл 9
+:PROPERTIES:
+:ID: 5B6E9AAC-4A9D-4AF3-8CEA-BDB131F0B3E8
+:WHAT: technology
+:WHEN: bronze
+:WHERE: China
+:ROAM_ALIASES: 
+:SOURCE: Glazychev-History-Of-Engineering
+:END:
+#+title: бронзовая втулка
+#+BEGIN_RELATIONS
+* Leads to
+[[id:63533A36-1B7D-4240-82F5-0346F8A7C426][колесо со спицами]]
+* Requires
+[[id:F7292786-039C-42E4-A019-035BE30932EF][бронза]]
+[[id:2CFD32EA-4556-49D5-AF65-0997683430C5][втулка]]
+* Subset of
+[[id:34D8F06C-597D-4DC0-9D80-0BEC05AC2AB8][колесо]]
+* Siblings
+#+END_RELATIONS
+
+
+файл 10
+:PROPERTIES:
+:ID: F28712F7-9374-4DA5-8AA4-42174B9EE76F
+:WHAT: technology
+:WHEN: tbd
+:WHERE: tbd
+:ROAM_ALIASES: "плавательный шар" "плавательный балон"
+:SOURCE: Glazychev-History-Of-Engineering
+:END:
+#+title: бурдюк
+#+BEGIN_RELATIONS
+* Leads to
+[[id:5354E878-F697-4315-A9E4-921DF5122485][Меха]]
+[[id:2F538C7B-CDD6-47F2-85FA-8E69974AA733][надувное плавательное средство]]
+* Requires
+
+* Subset of
+
+* Siblings
+#+END_RELATIONS
