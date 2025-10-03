@@ -691,7 +691,7 @@ here is sample of this code product, EDN extracts
   :edges []}]
 #+end_src
 
-** current backlog
+** Сurrent backlog
 TO LLLM:
 to reduce edge fragmentation this clojure code needs elaboration
 - edges from-to pairs needs to be consedered separately from doc
@@ -841,6 +841,67 @@ Below is an example of the JSON that the Clojure code should generate. It contai
     ]
   }
 #+end_src
+
+
+**** Addendum to Technical Specification: Layout Algorithm Details
+This document clarifies underspecified aspects of the backend layout algorithm for the Herodotus project.
+***** 1. Numerical Values for Layout
+
+All numerical values for the layout algorithm should be defined as constants to allow for easy configuration of the graph's appearance.
+
+****** Recommended Constants
+   - /Units/: All values are specified in /pixels (px)/.
+   - /Base Grid Step/:
+     - ~BASE_COLUMN_WIDTH: 350~ (Distance between the start of each WHEN column)
+     - ~BASE_ROW_HEIGHT: 120~ (Distance between the start of each WHERE row)
+   - /Offsets/:
+     - ~SIBLING_VERTICAL_OFFSET: 50~ (Vertical gap for nodes in the same grid cell)
+     - ~SEQUENCE_HORIZONTAL_OFFSET: 220~ (Horizontal gap for nodes in a sequence within the same column)
+   - /Node Sizing/:
+     - ~NODE_PADDING_HORIZONTAL: 20~
+     - ~NODE_PADDING_VERTICAL: 15~
+     - ~AVG_CHAR_WIDTH: 9~ (Average character width for a monospace font)
+
+****** Calculation Formulas
+#+BEGIN_SRC clojure
+;; width = (char-count-of-title * AVG_CHAR_WIDTH) + (2 * NODE_PADDING_HORIZONTAL)
+;;
+;; final-x = (when-column-index * BASE_COLUMN_WIDTH) + (horizontal-sequence-index * SEQUENCE_HORIZONTAL_OFFSET)
+;;
+;; final-y = (where-row-index * BASE_ROW_HEIGHT) + (sibling-in-cell-index * SIBLING_VERTICAL_OFFSET)
+#+END_SRC
+
+-----
+***** 2. Handling of Missing or Non-standard Attributes
+
+To prevent errors and ensure all nodes are rendered, a robust fallback mechanism will be used.
+
+****** Processing Rules
+   - If a node is missing the ~:WHEN~ attribute, or its value is not found in the predefined list of eras, the node is automatically assigned to the *"tbd"* column.
+   - If a node is missing the ~:WHERE~ attribute, or its value is not found in the predefined list of locations, the node is automatically assigned to the *"tbd"* row.
+
+This approach ensures the entire graph is always built, with problematic nodes grouped at the origin for further review.
+
+-----
+***** 3. Handling of Cycles and Complex Graph Structures
+
+The layout algorithm must account for complex graph structures.
+
+****** Processing Rules
+   - *Cycles*: The topological sort required for calculating the "horizontal index" will fail on graphs with cycles.
+     - /Solution/: The algorithm must *detect cycles* during graph traversal. If a cycle is detected, the algorithm will *not render the edge that closes the cycle*, and a warning should be logged. This prevents an infinite loop and allows the rest of the graph to be rendered correctly.
+   - *Multiple Inputs/Outputs*: A node can be part of multiple branches (e.g., A -> C and B -> C).
+     - /Solution/: This case is handled by the layout algorithm. The "horizontal index" of a node should be calculated based on the *longest path* from any source node to it. The vertical offsets (~SIBLING_VERTICAL_OFFSET~) already prevent collisions in these scenarios.
+
+-----
+***** 4. Height Calculation Requirements
+
+The node height calculation is defined as follows.
+
+****** Calculation Rules
+   - *Initial Version*: For the initial implementation, all nodes will have a *fixed height*. This simplifies vertical offset calculations.
+     - ~height~ = `(NODE_PADDING_VERTICAL * 2) + (single-line-text-height)`. For example, `(15 * 2) + 20 = 50px`.
+   - *Text Overflow*: If a title is too long for the calculated node width, it should be truncated on the front-end with an ellipsis (`...`). Future versions may implement dynamic height based on multi-line text, which would require a more complex calculation on the backend.
 
 
 * Front-end
